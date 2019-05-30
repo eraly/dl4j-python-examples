@@ -1,0 +1,728 @@
+<html>
+<head>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bgcolor {
+            background-color: #FFFFFF;
+        }
+
+        .hd {
+            background-color: #000000;
+            font-size: 18px;
+            color: #FFFFFF;
+        }
+
+        .sectionheader {
+            background-color: #888888;
+            width:100%;
+            font-size: 16px;
+            font-style: bold;
+            color: #FFFFFF;
+            /*padding-left: 40px;*/
+            /*padding-right: 8px;*/
+            /*padding-top: 2px;*/
+            /*padding-bottom: 2px;*/
+
+        }
+
+        .subsectiontop {
+            background-color: #F5F5FF;
+            height: 300px;
+        }
+
+        .subsectionbottom {
+            background-color: #F5F5FF;
+            height: 540px;
+        }
+
+        h1 {
+            font-family: Georgia, Times, 'Times New Roman', serif;
+            font-size: 28px;
+            font-style: bold;
+            font-variant: normal;
+            font-weight: 500;
+            line-height: 26.4px;
+        }
+
+        h3 {
+            font-family: Georgia, Times, 'Times New Roman', serif;
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 500;
+            line-height: 26.4px;
+        }
+
+        div.outerelements {
+            padding-bottom: 30px;
+        }
+
+        /** Line charts */
+        path {
+            stroke: steelblue;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .axis path, .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .tick line {
+            opacity: 0.2;
+            shape-rendering: crispEdges;
+        }
+
+        /** Bar charts */
+        .bar {
+            fill: steelblue;
+        }
+
+        rect {
+            fill: steelblue;
+        }
+
+        .legend rect {
+            fill:white;
+            stroke:black;
+            opacity:0.8;
+        }
+
+    </style>
+    <title>Data Analysis</title>
+
+</head>
+<body style="padding: 0px; margin: 0px" onload="generateContent()">
+
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+
+    function generateContent(){
+        var mainDiv = $('#maindiv');
+
+        var div2 = $('#tablesource');
+        console.log(div2.html());
+
+        var div2html = div2.html();
+        createTable(jQuery.parseJSON(div2html)["RenderableComponentTable"], "Summary Table", $('#tablediv'));
+
+        var histdiv = $("#histogramdiv");
+
+            var div_histdiv_CreditScore = $('#histdiv_CreditScore');
+            var html_histdiv_CreditScore = div_histdiv_CreditScore.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_CreditScore)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_GeographyFrance = $('#histdiv_GeographyFrance');
+            var html_histdiv_GeographyFrance = div_histdiv_GeographyFrance.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_GeographyFrance)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_GeographyGermany = $('#histdiv_GeographyGermany');
+            var html_histdiv_GeographyGermany = div_histdiv_GeographyGermany.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_GeographyGermany)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_GeographySpain = $('#histdiv_GeographySpain');
+            var html_histdiv_GeographySpain = div_histdiv_GeographySpain.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_GeographySpain)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_Gender = $('#histdiv_Gender');
+            var html_histdiv_Gender = div_histdiv_Gender.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_Gender)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_Age = $('#histdiv_Age');
+            var html_histdiv_Age = div_histdiv_Age.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_Age)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_Tenure = $('#histdiv_Tenure');
+            var html_histdiv_Tenure = div_histdiv_Tenure.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_Tenure)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_Balance = $('#histdiv_Balance');
+            var html_histdiv_Balance = div_histdiv_Balance.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_Balance)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_NumOfProducts = $('#histdiv_NumOfProducts');
+            var html_histdiv_NumOfProducts = div_histdiv_NumOfProducts.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_NumOfProducts)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_HasCrCard = $('#histdiv_HasCrCard');
+            var html_histdiv_HasCrCard = div_histdiv_HasCrCard.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_HasCrCard)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_IsActiveMember = $('#histdiv_IsActiveMember');
+            var html_histdiv_IsActiveMember = div_histdiv_IsActiveMember.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_IsActiveMember)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_EstimatedSalary = $('#histdiv_EstimatedSalary');
+            var html_histdiv_EstimatedSalary = div_histdiv_EstimatedSalary.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_EstimatedSalary)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+            var div_histdiv_Exited = $('#histdiv_Exited');
+            var html_histdiv_Exited = div_histdiv_Exited.html();
+            createHistogram(jQuery.parseJSON(html_histdiv_Exited)["RenderableComponentHistogram"], histdiv, 700, 400);
+
+
+    }
+
+    function createTable(tableObj, tableId, appendTo) {
+        //Expect RenderableComponentTable
+        var header = tableObj['header'];
+        var values = tableObj['table'];
+        var title = tableObj['title'];
+        var border = tableObj['border'];
+        var padLeft = tableObj['padLeftPx'];
+        var padRight = tableObj['padRightPx'];
+        var padTop = tableObj['padTopPx'];
+        var padBottom = tableObj['padBottomPx'];
+        var colWidths = tableObj['colWidthsPercent'];
+        var nRows = (values ? values.length : 0);
+        var backgroundColor = tableObj['backgroundColor'];
+        var headerColor = tableObj['headerColor'];
+
+
+        var tbl = document.createElement('table');
+        tbl.style.width = '100%';
+//        tbl.style.height = '100%';
+        tbl.setAttribute('border', border);
+        if(backgroundColor) tbl.style.backgroundColor = backgroundColor;
+
+        if (colWidths) {
+            for (var i = 0; i < colWidths.length; i++) {
+                var col = document.createElement('col');
+                col.setAttribute('width', colWidths[i] + '%');
+                tbl.appendChild(col);
+            }
+        }
+
+        if (header) {
+            var theader = document.createElement('thead');
+            var headerRow = document.createElement('tr');
+
+            if(headerColor) headerRow.style.backgroundColor = headerColor;
+
+            for (var i = 0; i < header.length; i++) {
+                var headerd = document.createElement('th');
+                headerd.style.padding = padTop + 'px ' + padRight + 'px ' + padBottom + 'px ' + padLeft + 'px';
+                headerd.appendChild(document.createTextNode(header[i]));
+                headerRow.appendChild(headerd);
+            }
+            tbl.appendChild(headerRow);
+        }
+
+        //Add content:
+        if (values) {
+
+            var tbdy = document.createElement('tbody');
+            for (var i = 0; i < values.length; i++) {
+                var tr = document.createElement('tr');
+
+                for (var j = 0; j < values[i].length; j++) {
+                    var td = document.createElement('td');
+                    td.style.padding = padTop + 'px ' + padRight + 'px ' + padBottom + 'px ' + padLeft + 'px';
+                    td.appendChild(document.createTextNode(values[i][j]));
+                    tr.appendChild(td);
+                }
+
+                tbdy.appendChild(tr);
+            }
+            tbl.appendChild(tbdy);
+        }
+
+        appendTo.append(tbl);
+    }
+
+    /** Create + add line chart with multiple lines, (optional) title, (optional) series names.
+     * appendTo: jquery selector of object to append to. MUST HAVE ID
+     * */
+    function createLineChart(chartObj, appendTo, chartWidth, chartHeight) {
+        //Expect: RenderableComponentLineChart
+        var title = chartObj['title'];
+        var xData = chartObj['x'];
+        var yData = chartObj['y'];
+        var mTop = chartObj['marginTop'];
+        var mBottom = chartObj['marginBottom'];
+        var mLeft = chartObj['marginLeft'];
+        var mRight = chartObj['marginRight'];
+        var removeAxisHorizontal = chartObj['removeAxisHorizontal'];
+        var seriesNames = chartObj['seriesNames'];
+        var withLegend = chartObj['legend'];
+        var nSeries = (!xData ? 0 : xData.length);
+
+        // Set the dimensions of the canvas / graph
+        var margin = {top: mTop, right: mRight, bottom: mBottom, left: mLeft},
+                width = chartWidth - margin.left - margin.right,
+                height = chartHeight - margin.top - margin.bottom;
+
+        // Set the ranges
+        var xScale = d3.scale.linear().range([0, width]);
+        var yScale = d3.scale.linear().range([height, 0]);
+
+        // Define the axes
+        var xAxis = d3.svg.axis().scale(xScale)
+                .innerTickSize(-height)     //used as grid line
+                .orient("bottom").ticks(5);
+
+        if(removeAxisHorizontal == true){
+            xAxis.tickValues([]);
+        }
+
+        var yAxis = d3.svg.axis().scale(yScale)
+                .innerTickSize(-width)      //used as grid line
+                .orient("left").ticks(5);
+
+        // Define the line
+        var valueline = d3.svg.line()
+                .x(function (d) {
+                    return xScale(d.xPos);
+                })
+                .y(function (d) {
+                    return yScale(d.yPos);
+                });
+
+        // Adds the svg canvas
+        var svg = d3.select("#" + appendTo.attr("id"))
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("padding", "20px")
+                .append("g")
+                .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
+
+        // Scale the range of the chart
+        var xMin = Number.MAX_VALUE;
+        var xMax = -Number.MAX_VALUE;
+        var yMax = -Number.MAX_VALUE;
+        var yMin = Number.MAX_VALUE;
+        for (var i = 0; i < nSeries; i++) {
+            var xV = xData[i];
+            var yV = yData[i];
+            var thisMin = d3.min(xV);
+            var thisMax = d3.max(xV);
+            var thisMaxY = d3.max(yV);
+            var thisMinY = d3.min(yV);
+            if (thisMin < xMin) xMin = thisMin;
+            if (thisMax > xMax) xMax = thisMax;
+            if (thisMaxY > yMax) yMax = thisMaxY;
+            if (thisMinY < yMin) yMin = thisMinY;
+        }
+        if (yMin > 0) yMin = 0;
+        xScale.domain([xMin, xMax]);
+        yScale.domain([yMin, yMax]);
+
+        // Add the valueline path.
+        var color = d3.scale.category10();
+        for (var i = 0; i < nSeries; i++) {
+            var xVals = xData[i];
+            var yVals = yData[i];
+
+            var data = xVals.map(function (d, i) {
+                return {'xPos': xVals[i], 'yPos': yVals[i]};
+            });
+            svg.append("path")
+                    .attr("class", "line")
+                    .style("stroke", color(i))
+                    .attr("d", valueline(data));
+        }
+
+        // Add the X Axis
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+        // Add the Y Axis
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
+
+        //Add legend (if present)
+        if (seriesNames && withLegend == true) {
+            var legendSpace = width / i;
+            for (var i = 0; i < nSeries; i++) {
+                var values = xData[i];
+                var yValues = yData[i];
+                var lastX = values[values.length - 1];
+                var lastY = yValues[yValues.length - 1];
+                var toDisplay;
+                if (!lastX || !lastY) toDisplay = seriesNames[i] + " (no data)";
+                else toDisplay = seriesNames[i] + " (" + lastX.toPrecision(5) + "," + lastY.toPrecision(5) + ")";
+                svg.append("text")
+                        .attr("x", (legendSpace / 2) + i * legendSpace) // spacing
+                        .attr("y", height + (margin.bottom / 2) + 5)
+                        .attr("class", "legend")    // style the legend
+                        .style("fill", color(i))
+                        .text(toDisplay);
+
+            }
+        }
+
+        //Add title (if present)
+        if (title) {
+            svg.append("text")
+                    .attr("x", (width / 2))
+                    .attr("y", 0 - ((margin.top - 30) / 2))
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "13px")
+                    .style("text-decoration", "underline")
+                    .text(title);
+        }
+    }
+
+    /** Create + add histogram
+     * */
+    function createHistogram(chartObj, appendTo, chartWidth, chartHeight) {
+        //Expect: RenderableComponentHistogram
+        var title = chartObj['title'];
+        var lowerBounds = chartObj['lowerBounds'];
+        var upperBounds = chartObj['upperBounds'];
+        var yValues = chartObj['yvalues'];
+        var mTop = chartObj['marginTop'];
+        var mBottom = chartObj['marginBottom'];
+        var mLeft = chartObj['marginLeft'];
+        var mRight = chartObj['marginRight'];
+//        var removeAxisHorizontal = chartObj['removeAxisHorizontal'];
+
+        // Set the dimensions of the canvas / graph
+        var margin = {top: mTop, right: mRight, bottom: mBottom, left: mLeft},
+                width = chartWidth - margin.left - margin.right,
+                height = chartHeight - margin.top - margin.bottom;
+
+        // Set the ranges
+        var xScale = d3.scale.linear().range([0, width]);
+        var yScale = d3.scale.linear().range([height, 0]);
+
+        var xMin = Number.MAX_VALUE;
+        var xMax = -Number.MAX_VALUE;
+        var yMax = -Number.MAX_VALUE;
+        for (var i = 0; i < lowerBounds.length; i++) {
+            if (lowerBounds[i] < xMin) xMin = lowerBounds[i];
+            if (upperBounds[i] > xMax) xMax = upperBounds[i];
+            if (yValues[i] > yMax) yMax = yValues[i];
+        }
+
+        // Define the axes
+        var xAxis = d3.scale.linear()
+                .domain([xMin, xMax])
+                .range([0, width]);
+
+        var yAxis = d3.scale.linear()
+                .domain([0, yMax])
+                .range([height, 0]);
+
+        // Set up the data:
+        var data = lowerBounds.map(function (d, i) {
+            return {'width': upperBounds[i] - lowerBounds[i], 'height': yValues[i], 'offset': lowerBounds[i]};
+        });
+
+
+        // Adds the svg canvas
+        var svg = d3.select("#" + appendTo.attr("id"))
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("padding", "20px")
+                .append("g")
+                .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
+
+        // Add the bins.
+        svg.selectAll(".bin")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bin")
+                .attr("x", function(d) { return xAxis(d.offset); })
+                .attr("width", function(d) { return xAxis(xMin + d.width) - 1; })
+                .attr("y", function(d) { return yAxis(d.height); })
+                .attr("height", function(d) { return height - yAxis(d.height); });
+
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.svg.axis()
+                        .scale(xAxis)
+                        .orient("bottom"));
+
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(d3.svg.axis()
+                        .scale(yAxis)
+                        .orient("left"));
+
+        //Add title (if present)
+        if (title) {
+            svg.append("text")
+                    .attr("x", (width / 2))
+                    .attr("y", 0 - ((margin.top - 30) / 2))
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "13px")
+                    .style("text-decoration", "underline")
+                    .text(title);
+        }
+    }
+</script>
+
+<table style="width: 100%; padding: 5px" class="hd">
+    <tbody>
+    <tr>
+        <td style="width:15px; height:35px; padding: 4px 15px;">
+        <td>Data Analysis</td>
+        <td style="text-align:right">2019-05-30 12:51:56 +00:00</td>
+        <td style="width:15px; height:35px; padding: 4px 15px;">
+    </tr>
+    </tbody>
+</table>
+
+<div style="width:1400px; margin:0 auto; border:0px" id="outerdiv">
+    <div style="width:100%; padding-top:20px" id="maindiv">
+        <div style="width:100%; height:20px"></div>
+        <div style="width:100%;" class="sectionheader">
+            <div style="padding-left:40px; padding-top:3px; padding-bottom:3px">
+                Summary Column Analysis
+            </div>
+        </div>
+        <div style="width:100%; height:auto" align="center" id="tablediv">
+
+        </div>
+
+        <div style="width:100%; height:20px"></div>
+        <div style="width:100%;" class="sectionheader">
+            <div style="padding-left:40px; padding-top:3px; padding-bottom:3px">
+                Numerical Column Histograms
+            </div>
+        </div>
+        <div style="width:100%; height:auto" align="center" id="histogramdiv">
+
+        </div>
+
+    </div>
+</div>
+
+<div id="histdiv_CreditScore" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "CreditScore",
+    "upperBounds" : [ 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0 ],
+    "yvalues" : [ 10.0, 69.0, 189.0, 404.0, 551.0, 723.0, 790.0, 621.0, 380.0, 262.0 ]
+  }
+}
+</div>
+<div id="histdiv_GeographyFrance" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Geography[France]",
+    "upperBounds" : [ 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0 ],
+    "yvalues" : [ 1991.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2008.0 ]
+  }
+}
+</div>
+<div id="histdiv_GeographyGermany" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Geography[Germany]",
+    "upperBounds" : [ 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0 ],
+    "yvalues" : [ 2982.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1017.0 ]
+  }
+}
+</div>
+<div id="histdiv_GeographySpain" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Geography[Spain]",
+    "upperBounds" : [ 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0 ],
+    "yvalues" : [ 3025.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 974.0 ]
+  }
+}
+</div>
+<div id="histdiv_Gender" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Gender",
+    "upperBounds" : [ 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0 ],
+    "yvalues" : [ 1853.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2146.0 ]
+  }
+}
+</div>
+<div id="histdiv_Age" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 18.0, 25.0, 32.0, 39.0, 46.0, 53.0, 60.0, 67.0, 74.0, 81.0 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Age",
+    "upperBounds" : [ 25.0, 32.0, 39.0, 46.0, 53.0, 60.0, 67.0, 74.0, 81.0, 88.0 ],
+    "yvalues" : [ 189.0, 790.0, 1254.0, 921.0, 418.0, 214.0, 123.0, 59.0, 26.0, 5.0 ]
+  }
+}
+</div>
+<div id="histdiv_Tenure" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Tenure",
+    "upperBounds" : [ 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 ],
+    "yvalues" : [ 157.0, 380.0, 415.0, 403.0, 402.0, 416.0, 395.0, 414.0, 426.0, 591.0 ]
+  }
+}
+</div>
+<div id="histdiv_Balance" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 25089.809, 50179.618, 75269.427, 100359.236, 125449.04500000001, 150538.854, 175628.663, 200718.472, 225808.28100000002 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Balance",
+    "upperBounds" : [ 25089.809, 50179.618, 75269.427, 100359.236, 125449.04500000001, 150538.854, 175628.663, 200718.472, 225808.28100000002, 250898.09 ],
+    "yvalues" : [ 1412.0, 27.0, 156.0, 475.0, 843.0, 694.0, 303.0, 76.0, 11.0, 2.0 ]
+  }
+}
+</div>
+<div id="histdiv_NumOfProducts" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 1.0, 1.3, 1.6, 1.9, 2.2, 2.5, 2.8, 3.1, 3.4, 3.6999999999999997 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "NumOfProducts",
+    "upperBounds" : [ 1.3, 1.6, 1.9, 2.2, 2.5, 2.8, 3.1, 3.4, 3.6999999999999997, 4.0 ],
+    "yvalues" : [ 2062.0, 0.0, 0.0, 1812.0, 0.0, 0.0, 105.0, 0.0, 0.0, 20.0 ]
+  }
+}
+</div>
+<div id="histdiv_HasCrCard" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "HasCrCard",
+    "upperBounds" : [ 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0 ],
+    "yvalues" : [ 1168.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2831.0 ]
+  }
+}
+</div>
+<div id="histdiv_IsActiveMember" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "IsActiveMember",
+    "upperBounds" : [ 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0 ],
+    "yvalues" : [ 1957.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2042.0 ]
+  }
+}
+</div>
+<div id="histdiv_EstimatedSalary" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 11.58, 20007.496000000003, 40003.412000000004, 59999.32800000001, 79995.244, 99991.16, 119987.07600000002, 139982.992, 159978.908, 179974.824 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "EstimatedSalary",
+    "upperBounds" : [ 20007.496000000003, 40003.412000000004, 59999.32800000001, 79995.244, 99991.16, 119987.07600000002, 139982.992, 159978.908, 179974.824, 199970.74 ],
+    "yvalues" : [ 394.0, 377.0, 398.0, 428.0, 389.0, 412.0, 409.0, 387.0, 393.0, 412.0 ]
+  }
+}
+</div>
+<div id="histdiv_Exited" style="display:none">
+{
+  "RenderableComponentHistogram" : {
+    "componentType" : "histogram",
+    "lowerBounds" : [ 0.0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9 ],
+    "marginBottom" : 60,
+    "marginLeft" : 90,
+    "marginRight" : 20,
+    "marginTop" : 60,
+    "title" : "Exited",
+    "upperBounds" : [ 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1.0 ],
+    "yvalues" : [ 3153.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 846.0 ]
+  }
+}
+</div>
+<div id="tablesource" style="display:none">
+{
+  "RenderableComponentTable" : {
+    "backgroundColor" : "#FFFFFF",
+    "border" : 1,
+    "colWidthsPercent" : [ 20.0, 10.0, 70.0 ],
+    "componentType" : "simpletable",
+    "header" : [ "Column Name", "Column Type", "Column Analysis" ],
+    "headerColor" : "#CCCCCC",
+    "padBottomPx" : 0,
+    "padLeftPx" : 4,
+    "padRightPx" : 4,
+    "padTopPx" : 0,
+    "table" : [ [ "CreditScore", "Integer", "IntegerAnalysis(min=350, max=850, mean=650.135033758439, sampleStDev=97.39910709793162, sampleVariance=9486.586063474355, countZero=0, countNegative=0, countPositive=3999, countMinValue=2, countMaxValue=87, count=3999,  quantiles=[0.001 : 357.63019999999995, 0.01 : 429.2401344537816, 0.1 : 520.3030303030304, 0.5 : 652.923516189782, 0.9 : 777.7281105990784, 0.99 : 850.0, 0.999 : 850.0])" ], [ "Geography[France]", "Integer", "IntegerAnalysis(min=0, max=1, mean=0.5021255313828453, sampleStDev=0.5000580088869063, sampleVariance=0.25005801225193725, countZero=1991, countNegative=0, countPositive=3999, countMinValue=1991, countMaxValue=2008, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 0.7186041793467235, 0.9 : 1.0, 0.99 : 1.0, 0.999 : 1.0])" ], [ "Geography[Germany]", "Integer", "IntegerAnalysis(min=0, max=1, mean=0.2543135783945985, sampleStDev=0.43552912130065824, sampleVariance=0.1896856155009235, countZero=2982, countNegative=0, countPositive=3999, countMinValue=2982, countMaxValue=1017, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 0.0, 0.9 : 1.0, 0.99 : 1.0, 0.999 : 1.0])" ], [ "Geography[Spain]", "Integer", "IntegerAnalysis(min=0, max=1, mean=0.2435608902225552, sampleStDev=0.4292843646857984, sampleVariance=0.18428506576368955, countZero=3025, countNegative=0, countPositive=3999, countMinValue=3025, countMaxValue=974, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 0.0, 0.9 : 1.0, 0.99 : 1.0, 0.999 : 1.0])" ], [ "Gender", "Integer", "IntegerAnalysis(min=0, max=1, mean=0.5366341585396351, sampleStDev=0.4987184917470892, sampleVariance=0.24872013401049148, countZero=1853, countNegative=0, countPositive=3999, countMinValue=1853, countMaxValue=2146, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 1.0, 0.9 : 1.0, 0.99 : 1.0, 0.999 : 1.0])" ], [ "Age", "Integer", "IntegerAnalysis(min=18, max=88, mean=38.90072518129527, sampleStDev=10.591954103002118, sampleVariance=112.18949172010342, countZero=0, countNegative=0, countPositive=3999, countMinValue=10, countMaxValue=1, count=3999,  quantiles=[0.001 : 18.0, 0.01 : 20.92718181818182, 0.1 : 27.173508196721315, 0.5 : 37.0, 0.9 : 53.54226600985221, 0.99 : 72.16799999999996, 0.999 : 81.7515000000003])" ], [ "Tenure", "Integer", "IntegerAnalysis(min=0, max=10, mean=5.07401850462616, sampleStDev=2.8631488681831327, sampleVariance=8.197621441378354, countZero=157, countNegative=0, countPositive=3999, countMinValue=157, countMaxValue=189, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 1.0, 0.5 : 5.0, 0.9 : 9.0, 0.99 : 10.0, 0.999 : 10.0])" ], [ "Balance", "Double", "DoubleAnalysis(min=0.0, max=250898.09, mean=77512.03708927227, sampleStDev=62265.781812024456, sampleVariance=3.877027584662636E9, countZero=1411, countNegative=0, countPositive=3999, countMinValue=1411, countMaxValue=1, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 97842.27381122153, 0.9 : 150193.6546160776, 0.99 : 185652.63991029406, 0.999 : 213751.7708133344])" ], [ "NumOfProducts", "Integer", "IntegerAnalysis(min=1, max=4, mean=1.520630157539385, sampleStDev=0.5763489325458787, sampleVariance=0.3321780920467738, countZero=0, countNegative=0, countPositive=3999, countMinValue=2062, countMaxValue=20, count=3999,  quantiles=[0.001 : 1.0, 0.01 : 1.0, 0.1 : 1.0, 0.5 : 1.0586561264822134, 0.9 : 2.0, 0.99 : 3.0, 0.999 : 4.0])" ], [ "HasCrCard", "Integer", "IntegerAnalysis(min=0, max=1, mean=0.7079269817454361, sampleStDev=0.4547725670195204, sampleVariance=0.2068180877135242, countZero=1168, countNegative=0, countPositive=3999, countMinValue=1168, countMaxValue=2831, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 1.0, 0.9 : 1.0, 0.99 : 1.0, 0.999 : 1.0])" ], [ "IsActiveMember", "Integer", "IntegerAnalysis(min=0, max=1, mean=0.5106276569142292, sampleStDev=0.4999495533783862, sampleVariance=0.24994955592324786, countZero=1957, countNegative=0, countPositive=3999, countMinValue=1957, countMaxValue=2042, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 0.8679425837320575, 0.9 : 1.0, 0.99 : 1.0, 0.999 : 1.0])" ], [ "EstimatedSalary", "Double", "DoubleAnalysis(min=11.58, max=199970.74, mean=100536.5237034259, sampleStDev=57576.014022218376, sampleVariance=3.314997390686687E9, countZero=0, countNegative=0, countPositive=3999, countMinValue=1, countMaxValue=1, count=3999,  quantiles=[0.001 : 241.88791, 0.01 : 2300.5193275, 0.1 : 20273.75074299755, 0.5 : 100367.77851575844, 0.9 : 180535.44972757355, 0.99 : 198150.77801299997, 0.999 : 199726.67018833334])" ], [ "Exited", "Integer", "IntegerAnalysis(min=0, max=1, mean=0.21155288822205542, sampleStDev=0.4084605049856127, sampleVariance=0.16683998413310175, countZero=3153, countNegative=0, countPositive=3999, countMinValue=3153, countMaxValue=846, count=3999,  quantiles=[0.001 : 0.0, 0.01 : 0.0, 0.1 : 0.0, 0.5 : 0.0, 0.9 : 1.0, 0.99 : 1.0, 0.999 : 1.0])" ] ],
+    "title" : null
+  }
+}
+</div>
+
+</body>
+
+</html>
